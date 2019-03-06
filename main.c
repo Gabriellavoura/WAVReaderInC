@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//Defines the size of buffer
-int buff[80000];
+//Defines the size of buffer short because the generated data is 16bits format short = 2 bytes.
+short buff[80000];
 int byteRead = 0;
 
 int main(){
@@ -13,10 +13,10 @@ int main(){
     // Defines the log file.
     FILE *fileLog;
     // Create and Open the Log file.
-    fileLog = fopen("Log.csv","ab");
+    fileLog = fopen("SenLog.csv","ab");
 
     //Try if file is not empty return true.
-    if ((wavFile = fopen("silence.wav", "rb")) == NULL){
+    if ((wavFile = fopen("seno.wav", "rb")) == NULL){
         printf("Fail!");
         exit(1);
     }
@@ -27,11 +27,11 @@ int main(){
     // while remains data.
     do{
         //in each loop reads 1024 bytes.
-        byteRead = fread(buff,sizeof(int),1024,wavFile);
+        byteRead = fread(buff,sizeof(short),1024,wavFile);
 
             for(i = 0; i < 1024 ; i++){
                 //printf("%i == %hhx \n",i,buff[i]);
-                fprintf(fileLog,"%d\n",buff[i]);
+                fprintf(fileLog,"%i\n",buff[i]);
                 buff[i] = 0;
             }
 
