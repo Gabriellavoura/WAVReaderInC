@@ -9,11 +9,11 @@ int main(){
 
     int i;
 
-    FILE * wavFile;
+    FILE *wavFile;
     // Defines the log file.
     FILE *fileLog;
     // Create and Open the Log file.
-    fileLog = fopen("SenLog.csv","ab");
+    fileLog = fopen("TesteRMS.csv","ab");
 
     //Try if file is not empty return true.
     if ((wavFile = fopen("seno.wav", "rb")) == NULL){
