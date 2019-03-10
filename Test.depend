@@ -1,9 +1,0 @@
-# depslib dependency file v1.0
-1551856360 source:d:\wavreadinc\main.c
-	<stdio.h>
-	<stdlib.h>
-
-1551926224 source:d:\wavreadinc\rmsalgorithim.c
-	<stdio.h>
-	<stdlib.h>
-
