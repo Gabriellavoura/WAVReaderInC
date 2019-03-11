@@ -4,17 +4,17 @@
 #include<math.h>
 
 //Defines 30ms window size:
-#define WINDOW_LENGHT 480
+#define WINDOW_LENGTH 480
 
 int main(){
 
     FILE * fp;
 
-    int window[WINDOW_LENGHT];
-    char str[126];
+    int window[WINDOW_LENGTH];
+    char str[100];
     int i=0;
-    long long int a = 0, b = 0 , c =0;
-    long long int RMS = 0;
+    double a = 0, c =0;
+    int RMS = 0;
 
     // Open the file and verify is NULL.
     if((fp = fopen("SenLog.csv","r")) == NULL){
@@ -24,8 +24,8 @@ int main(){
     }
 
     // Load the data in window.
-    while(i < WINDOW_LENGHT){
-        if(fgets(str,1240,fp)){
+    while(i < WINDOW_LENGTH){
+        if(fgets(str,100,fp)){
             //Transform string in integer and store in window array.
             window[i]= atoi(str);
             //printf("%d \n",windowSize[i]);
@@ -35,22 +35,20 @@ int main(){
 
     // Begin RMS Algorithm
     // First calculate the sum and square.
-    for(i = 0; i < (WINDOW_LENGHT - 1); i++){
+    for(i = 0; i < WINDOW_LENGTH; i++){
 
         a = window[i];
         //printf("A: %lld\n",a);
 
-        b = window[i+1];
-       // printf("B: %lld\n",b);
-
-        c += ((a*a) + (b*b));
-        //Printf("C: %lld\n",c);
+        c += (a*a);
+       // printf("C: %lld\n",c);
     }
 
     // Calculate the root.
-    RMS = sqrt(c / WINDOW_LENGHT);
+    c = c / WINDOW_LENGTH;
+    RMS = sqrt(c);
 
-    printf("RMS: %lld",RMS);
+    printf("RMS: %d",RMS);
 
     fclose(fp);
 
