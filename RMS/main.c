@@ -1,56 +1,69 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<string.h>
 #include<math.h>
-
-//Defines 30ms window size:
-#define WINDOW_LENGTH 480
 
 int main(){
 
-    FILE * fp;
-
-    int window[WINDOW_LENGTH];
-    char str[100];
-    int i=0;
-    double a = 0, c =0;
-    int RMS = 0;
+    FILE *fp;
+    int salto = 160;
+    int buffer[480] = {0};
+    int cabeca = 0, rabo = 0;
+    char str[100] ={0};
+    long long soma = 0;
+    long long rms=0;
+    int dadospreenchidos=0;
 
     // Open the file and verify is NULL.
     if((fp = fopen("SenLog.csv","r")) == NULL){
-
         printf("Error! Can't open the file.\n");
         exit(1);
     }
 
-    // Load the data in window.
-    while(i < WINDOW_LENGTH){
-        if(fgets(str,100,fp)){
-            //Transform string in integer and store in window array.
-            window[i]= atoi(str);
-            //printf("%d \n",windowSize[i]);
+    while(!feof(fp)){
+
+        //Preenche de 0 a 479:.
+        fgets(str,1024,fp);
+        buffer[cabeca] = atoi(str);
+        dadospreenchidos++;
+        if(cabeca >= (3*salto)){
+            cabeca =0;
+            soma =0;
         }
-        i++;
+        //Se o buffer está cheio cabeca+1(480) = 480:
+        if(dadospreenchidos >= (3*salto)){
+            // Soma os quadrados dos valores de 0 á 479
+            for(int i = 0; i <(3*salto); i++){
+                soma += buffer[i]*buffer[i];
+            }
+            // divide por 480 e tira a raiz:
+            soma = soma/480;
+            rms = sqrt(soma);
+            printf("RMS: %.llu\n", rms);
+            soma=0;
+
+            // cabeca vai para o valor do rabo 0 - 160 - 320 -480;
+            cabeca = rabo;
+            // incrementa rabo
+            rabo += salto; //160 320 480
+            //faz a leitura de 160 novos valores.
+            do{
+                fgets(str,1024,fp);
+                buffer[cabeca] = atoi(str);
+                cabeca++;
+            }while(cabeca != rabo);
+
+            for(int j =0; j < 480;j++){
+
+                //printf("%d\n",buffer[j]);
+            }
+
+                if(rabo >= (3*salto)){
+                    rabo = 0;
+                }
+        }
+                cabeca++;
+
     }
-
-    // Begin RMS Algorithm
-    // First calculate the sum and square.
-    for(i = 0; i < WINDOW_LENGTH; i++){
-
-        a = window[i];
-        //printf("A: %lld\n",a);
-
-        c += (a*a);
-       // printf("C: %lld\n",c);
-    }
-
-    // Calculate the root.
-    c = c / WINDOW_LENGTH;
-    RMS = sqrt(c);
-
-    printf("RMS: %d",RMS);
-
     fclose(fp);
-
-    return(0);
+    return 1;
 }
