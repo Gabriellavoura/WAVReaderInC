@@ -3,10 +3,9 @@
 #include<string.h>
 #include<math.h>
 
-
 // Define the size of window 50ms
 #define window_size 480 // 30ms
-#define buffer_size 2080 // 130ms
+#define buffer_size 2080 // 130ms = 50ms + 30ms + 50ms
 
 int main(){
 
@@ -17,7 +16,6 @@ int main(){
 	int read = 0;
 	int read1 =0;
 	int counter_elements = 0;
-    int cont_salto = 0;
 
 	//Define variaveis referentes a leitura do arquivo e manipulacoes do mesmo.
 	FILE * fp;
@@ -29,7 +27,7 @@ int main(){
 	long double rms = 0;
 
     // Open the file and verify is NULL.
-    if((fp = fopen("A5a-02-16khz.csv","r")) == NULL){
+    if((fp = fopen("A5a-02-16khz.csv","r")) == NULL){ // Define o nome do csv para abrir
         printf("Error! Can't open the file.\n");
         exit(1);
     }
@@ -47,9 +45,11 @@ int main(){
 
                 read1 = read;
                 for(i = 0; i < window_size; i++){
+
                     // Faz o quadrado e soma.
                     soma_quadrado += buffer[read1]*buffer[read1];
                     read1 = (read1 + 1) % buffer_size;
+
                 }
 
                 // RMS dado pela raiz da soma dos quadrados sobre o tamanho da janela;
@@ -64,8 +64,6 @@ int main(){
                 counter_elements = counter_elements - 160;
 
             }
-
-           cont_salto = 0;
 
 	}
 fclose(fp);
