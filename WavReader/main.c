@@ -2,7 +2,8 @@
 #include <stdlib.h>
 
 //Defines the size of buffer short because the generated data is 16bits format short = 2 bytes.
-short buff[80000];
+//Size is 16khz * tempo de amostra ( 5s ) = 80000 ou 43s
+short buff[688000];
 int byteRead = 0;
 
 int main(){
@@ -14,10 +15,10 @@ int main(){
     FILE *fileLog;
 
     // Create and Open the Log file.
-    fileLog = fopen("SenoLog.csv","ab");
+    fileLog = fopen("A5-02-16bits.csv","ab");
 
     //Try if file is not empty return true.
-    if ((wavFile = fopen("seno.wav", "rb")) == NULL){
+    if ((wavFile = fopen("A5a-02-16bit-16k.wav", "rb")) == NULL){
         printf("Fail!");
         exit(1);
     }
