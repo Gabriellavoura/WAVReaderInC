@@ -19,6 +19,7 @@ int main(){
 
 	//Define variaveis referentes a leitura do arquivo e manipulacoes do mesmo.
 	FILE * fp;
+	FILE * log_rms;
 	char str[1024]; // vetor para armazenar os caracteres lidos como string.
 
 
@@ -27,16 +28,18 @@ int main(){
 	long double rms = 0;
 
     // Open the file and verify is NULL.
-    if((fp = fopen("A5a-02-16khz.csv","r")) == NULL){ // Define o nome do csv para abrir
+    if((fp = fopen("A1-60seg.csv","r")) == NULL){ // Define o nome do csv para abrir
         printf("Error! Can't open the file.\n");
         exit(1);
     }
-
+    log_rms = fopen("logA1m.txt","w");
+    int cont = 0;
 	//devemos ler o arquivo e processar:
 	while(!feof(fp)){
 
             fgets(str,1024,fp); //Lê o arquivo de 1024 cacacteres e armazena no vetor str.
-            buffer[write] = (atoi(str) & 0xff00) / 256; // Adiciona no buffer na posição head o caractere convertido.
+            //buffer[write] = (atoi(str) & 0xff00) / 256; // Adiciona no buffer na posição head o caractere convertido.
+            buffer[write] = (atoi(str));
             write = (write + 1) % buffer_size; // faz ficar "redondo".
             counter_elements++; // Soma um na quantidade de elementos.
 
@@ -54,7 +57,18 @@ int main(){
 
                 // RMS dado pela raiz da soma dos quadrados sobre o tamanho da janela;
                 rms = sqrt(soma_quadrado/window_size);
-                printf("rms:\n %.lf\n", rms);
+                fprintf(log_rms,"%.lf\n",rms);
+
+                    if(rms > 1000){
+                        read1
+                        // começa a parte da fft
+                        //pega o valor e volta 50ms depois depois pega os próximos 150 ms
+                        printf("FFT\n");
+
+                    }
+                cont++;
+                //printf("Rms:%.lf  -- Cont: %d \n", rms, cont);
+
                 soma_quadrado =0;
 
                 //Faz a cola ficar circular, pula de 160 em 160.
@@ -67,6 +81,7 @@ int main(){
 
 	}
 fclose(fp);
+fclose(log_rms);
 return 0;
 }
 
